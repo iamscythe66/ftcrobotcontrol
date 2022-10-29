@@ -13,7 +13,7 @@ public class Test extends LinearOpMode {
     DcMotorEx FrontLeft,FrontRight,BackLeft,BackRight,Slider;
     Servo grabber;
 
-    double driveSpeed = 0.5;
+    double driveSpeed = 0.3;
 
     public void runOpMode() throws InterruptedException
     {
