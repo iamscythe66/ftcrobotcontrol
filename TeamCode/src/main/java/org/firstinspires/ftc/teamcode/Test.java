@@ -13,7 +13,7 @@ public class Test extends LinearOpMode {
     DcMotorEx FrontLeft,FrontRight,BackLeft,BackRight,Slider;
     Servo grabber;
 
-    double driveSpeed = 0.6;
+    double driveSpeed = 0.5;
 
     public void runOpMode() throws InterruptedException
     {
@@ -44,13 +44,6 @@ public class Test extends LinearOpMode {
                 Drive(0,0,0);
             }
 
-            if(gamepad1.a){
-                grabber.setPosition(0);
-            }
-            if(gamepad1.b){
-                grabber.setPosition(0.1);
-            }
-
 
             if(gamepad1.dpad_up){
                 Slider.setPower(0.3);
@@ -63,10 +56,10 @@ public class Test extends LinearOpMode {
             }
 
             if(gamepad1.a){
-                grabber.setPosition(.8);
+                grabber.setPosition(.3);
             }
             if(gamepad1.b){
-                grabber.setPosition(.85);
+                grabber.setPosition(.55);
             }
         }
     }
@@ -83,5 +76,14 @@ public class Test extends LinearOpMode {
         FrontLeft.setPower(driveSpeed * fldrive / max);
         BackRight.setPower(driveSpeed * brdrive / max);
         BackLeft.setPower(driveSpeed * bldrive / max);
+
+
+
+
+
+
+
+
+
     }
 }
