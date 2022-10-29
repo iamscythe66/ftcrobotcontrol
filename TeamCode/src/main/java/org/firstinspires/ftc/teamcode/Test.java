@@ -46,9 +46,21 @@ public class Test extends LinearOpMode {
 
 
 
-
             double position = Slider.getCurrentPosition();
             telemetry.addData("slider position", position);
+            telemetry.update();
+
+
+             int rotation = 384 * 10;
+            while(Slider.getTargetPosition() != rotation)
+            {
+             if(gamepad1.x)
+            {
+                Slider.setPower(.4);
+                Slider.setTargetPosition(rotation);
+            }
+            }
+
 
 
             if(gamepad1.dpad_up){
