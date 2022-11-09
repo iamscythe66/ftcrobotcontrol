@@ -56,7 +56,10 @@ public class Test extends LinearOpMode {
             if(gamepad1.dpad_down){
                 Slider.setTargetPosition(50);
             }
-
+            if(gamepad1.dpad_left)
+            {
+                Slider.setTargetPosition(1000);
+            }
             if(gamepad1.a){
                 grabber.setPosition(.3);
             }
