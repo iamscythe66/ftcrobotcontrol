@@ -47,7 +47,7 @@ public class AndrewOpMode extends LinearOpMode {
     double driveSpeed = 0.8;
     double slowerDriveSpeed = 0.4;
     double slideSpeed = 0.3;
-    double autoSlideSpeed = 0.4;
+    double autoSlideSpeed = 0.6;
     double sens = 0.2;
 
     public void runOpMode() throws InterruptedException {

@@ -14,7 +14,7 @@ public class Test extends LinearOpMode {
     DcMotorEx FrontLeft,FrontRight,BackLeft,BackRight,Slider;
     Servo grabber;
 
-    double driveSpeed = 0.3;
+    double driveSpeed = 0.8;
 
     public void runOpMode() throws InterruptedException
     {
@@ -34,7 +34,6 @@ public class Test extends LinearOpMode {
         Slider.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         Slider.setTargetPosition(0);
         Slider.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        Slider.setPower(0.5);
 
         waitForStart();
 
@@ -66,9 +65,6 @@ public class Test extends LinearOpMode {
             }
             else if(gamepad1.dpad_left){
                 Slider.setTargetPosition(1000);
-            }
-            else{
-                Slider.setPower(0.0);
             }
 
             if(gamepad1.a){
