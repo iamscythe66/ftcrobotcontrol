@@ -4,6 +4,7 @@ import android.transition.Slide;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
@@ -28,7 +29,12 @@ public class Test extends LinearOpMode {
 
         BackLeft.setDirection(DcMotorSimple.Direction.REVERSE);
         FrontLeft.setDirection(DcMotorSimple.Direction.REVERSE);
-        Slider.setDirection(DcMotorSimple.Direction.REVERSE  );
+        Slider.setDirection(DcMotorSimple.Direction.REVERSE);
+
+        Slider.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        Slider.setTargetPosition(0);
+        Slider.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        Slider.setPower(0.5);
 
         waitForStart();
 
@@ -51,23 +57,15 @@ public class Test extends LinearOpMode {
             telemetry.update();
 
 
-             int rotation = 384 * 10;
-            while(Slider.getTargetPosition() != rotation)
-            {
-             if(gamepad1.x)
-            {
-                Slider.setPower(.4);
-                Slider.setTargetPosition(rotation);
-            }
-            }
-
-
 
             if(gamepad1.dpad_up){
-                Slider.setPower(0.3);
+                Slider.setTargetPosition(2000);
             }
             else if(gamepad1.dpad_down){
-                Slider.setPower(-0.3);
+                Slider.setTargetPosition(0);
+            }
+            else if(gamepad1.dpad_left){
+                Slider.setTargetPosition(1000);
             }
             else{
                 Slider.setPower(0.0);
@@ -94,14 +92,5 @@ public class Test extends LinearOpMode {
         FrontLeft.setPower(driveSpeed * fldrive / max);
         BackRight.setPower(driveSpeed * brdrive / max);
         BackLeft.setPower(driveSpeed * bldrive / max);
-
-
-
-
-
-
-
-
-
     }
 }

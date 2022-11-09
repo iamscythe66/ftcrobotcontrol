@@ -146,6 +146,19 @@ public class AndrewOpMode extends LinearOpMode {
                     grabber.setPosition(.53);
                 }
             }
+
+            //telemetry
+            {
+                telemetry.addData("gamepad1leftstickx", gamepad1.left_stick_x);
+                telemetry.addData("horz control", horizontalControl);
+                telemetry.addData("gamepad1leftsticky", gamepad1.left_stick_y);
+                telemetry.addData("vert control", verticalControl);
+                telemetry.addData("gamepad1rightstickx", gamepad1.right_stick_x);
+                telemetry.addData("rotate control", rotateControl);
+                telemetry.addData("DriveState", driveState);
+                telemetry.addData("SlideState", slideState);
+
+            }
         }
     }
 
