@@ -4,6 +4,7 @@ import android.transition.Slide;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
@@ -28,7 +29,12 @@ public class Test extends LinearOpMode {
 
         BackLeft.setDirection(DcMotorSimple.Direction.REVERSE);
         FrontLeft.setDirection(DcMotorSimple.Direction.REVERSE);
-        Slider.setDirection(DcMotorSimple.Direction.REVERSE  );
+        Slider.setDirection(DcMotorSimple.Direction.REVERSE);
+
+        Slider.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        Slider.setTargetPosition(0);
+        Slider.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        Slider.setPower(0.4);
 
         waitForStart();
 
@@ -44,31 +50,11 @@ public class Test extends LinearOpMode {
                 Drive(0,0,0);
             }
 
-
-
-            double position = Slider.getCurrentPosition();
-            telemetry.addData("slider position", position);
-            telemetry.update();
-
-
-             int rotation = 384 * 10;
-             if(gamepad1.x)
-            {
-                Slider.setPower(.4);
-                Slider.setTargetPosition(rotation);
-            }
-
-
-
-
             if(gamepad1.dpad_up){
-                Slider.setPower(0.3);
+                Slider.setTargetPosition(2000);
             }
-            else if(gamepad1.dpad_down){
-                Slider.setPower(-0.3);
-            }
-            else{
-                Slider.setPower(0.0);
+            if(gamepad1.dpad_down){
+                Slider.setTargetPosition(50);
             }
 
             if(gamepad1.a){
@@ -77,6 +63,10 @@ public class Test extends LinearOpMode {
             if(gamepad1.b){
                 grabber.setPosition(.55);
             }
+
+            double position = Slider.getCurrentPosition();
+            telemetry.addData("slider position", position);
+            telemetry.update();
         }
     }
 
