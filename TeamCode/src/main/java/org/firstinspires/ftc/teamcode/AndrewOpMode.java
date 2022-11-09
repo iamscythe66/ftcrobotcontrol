@@ -24,7 +24,7 @@ import com.qualcomm.robotcore.util.Range;
         y:              high?
  */
 
-@TeleOp(name = "AndrewCode", group = "TeleOp")
+@TeleOp(name = "Andrew opmode", group = "TeleOp")
 public class AndrewOpMode extends LinearOpMode {
     DcMotorEx FrontLeft, FrontRight, BackLeft, BackRight, Slider;
     Servo grabber;
@@ -44,10 +44,10 @@ public class AndrewOpMode extends LinearOpMode {
     DRIVESTATE driveState = DRIVESTATE.joyDrive;
     SLIDESTATE slideState = SLIDESTATE.autoSlide;
 
-    double driveSpeed = 0.3;
-    double slowerDriveSpeed = 0.1;
+    double driveSpeed = 0.8;
+    double slowerDriveSpeed = 0.4;
     double slideSpeed = 0.3;
-    double autoSlideSpeed = 0.4;
+    double autoSlideSpeed = 0.6;
     double sens = 0.2;
 
     public void runOpMode() throws InterruptedException {
@@ -74,7 +74,7 @@ public class AndrewOpMode extends LinearOpMode {
                 //get gamepad joystick and dpad variables for control
                 verticalControl = -1 * clipJoyInput(gamepad1.left_stick_y);
                 horizontalControl = clipJoyInput(gamepad1.left_stick_x);
-                rotateControl = clipJoyInput(gamepad1.left_stick_x);
+                rotateControl = clipJoyInput(gamepad1.right_stick_x);
 
                 verticalSlowControl = getGamepad1DpadY();
                 horizontalSlowControl = getGamepad1DpadX();
@@ -146,6 +146,18 @@ public class AndrewOpMode extends LinearOpMode {
                     grabber.setPosition(.53);
                 }
             }
+
+            //telemetry
+            telemetry.addData("gamepad1leftstickx", gamepad1.left_stick_x);
+            telemetry.addData("horz control", horizontalControl);
+            telemetry.addData("gamepad1leftsticky", gamepad1.left_stick_y);
+            telemetry.addData("vert control", verticalControl);
+            telemetry.addData("gamepad1rightstickx", gamepad1.right_stick_x);
+            telemetry.addData("rotate control", rotateControl);
+            telemetry.addData("DriveState", driveState);
+            telemetry.addData("SlideState", slideState);
+
+            telemetry.update();
         }
     }
 
