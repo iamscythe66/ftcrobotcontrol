@@ -14,7 +14,7 @@ public class Test extends LinearOpMode {
     DcMotorEx FrontLeft,FrontRight,BackLeft,BackRight,Slider;
     Servo grabber;
 
-    double driveSpeed = 0.8;
+    double driveSpeed = 0.5;
 
     public void runOpMode() throws InterruptedException
     {
@@ -34,6 +34,7 @@ public class Test extends LinearOpMode {
         Slider.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         Slider.setTargetPosition(0);
         Slider.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        Slider.setPower(0.4);
 
         waitForStart();
 
@@ -49,22 +50,11 @@ public class Test extends LinearOpMode {
                 Drive(0,0,0);
             }
 
-
-
-            double position = Slider.getCurrentPosition();
-            telemetry.addData("slider position", position);
-            telemetry.update();
-
-
-
             if(gamepad1.dpad_up){
                 Slider.setTargetPosition(2000);
             }
-            else if(gamepad1.dpad_down){
-                Slider.setTargetPosition(0);
-            }
-            else if(gamepad1.dpad_left){
-                Slider.setTargetPosition(1000);
+            if(gamepad1.dpad_down){
+                Slider.setTargetPosition(50);
             }
 
             if(gamepad1.a){
@@ -73,6 +63,10 @@ public class Test extends LinearOpMode {
             if(gamepad1.b){
                 grabber.setPosition(.55);
             }
+
+            double position = Slider.getCurrentPosition();
+            telemetry.addData("slider position", position);
+            telemetry.update();
         }
     }
 
@@ -88,5 +82,14 @@ public class Test extends LinearOpMode {
         FrontLeft.setPower(driveSpeed * fldrive / max);
         BackRight.setPower(driveSpeed * brdrive / max);
         BackLeft.setPower(driveSpeed * bldrive / max);
+
+
+
+
+
+
+
+
+
     }
 }
