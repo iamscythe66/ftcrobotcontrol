@@ -112,10 +112,10 @@ public class AndrewOpMode extends LinearOpMode {
                             autoSlide(0);
                         }
                         if(gamepad2.b){
-                            autoSlide(1600);
+                            autoSlide(1500);
                         }
                         if(gamepad2.x){
-                            autoSlide(1900);
+                            autoSlide(2000);
                         }
                         if(gamepad2.y){
                             autoSlide(2500);
@@ -150,6 +150,7 @@ public class AndrewOpMode extends LinearOpMode {
             //reset slider
             if(gamepad2.dpad_down){
                 Slider.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+                Slider.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
             }
 
             //telemetry
@@ -161,6 +162,7 @@ public class AndrewOpMode extends LinearOpMode {
             telemetry.addData("rotate control", rotateControl);
             telemetry.addData("DriveState", driveState);
             telemetry.addData("SlideState", slideState);
+            telemetry.addData("Slide position", Slider.getCurrentPosition());
 
             telemetry.update();
         }
