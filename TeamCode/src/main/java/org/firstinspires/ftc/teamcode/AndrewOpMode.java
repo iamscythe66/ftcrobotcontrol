@@ -112,7 +112,7 @@ public class AndrewOpMode extends LinearOpMode {
                             autoSlide(0);
                         }
                         if(gamepad2.b){
-                            autoSlide(1500);
+                            autoSlide(1700);
                         }
                         if(gamepad2.x){
                             autoSlide(2000);
