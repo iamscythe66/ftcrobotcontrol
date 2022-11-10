@@ -47,7 +47,7 @@ public class AndrewOpMode extends LinearOpMode {
     double driveSpeed = 0.8;
     double slowerDriveSpeed = 0.4;
     double slideSpeed = 0.3;
-    double autoSlideSpeed = 0.6;
+    double autoSlideSpeed = 0.8;
     double sens = 0.2;
 
     public void runOpMode() throws InterruptedException {
@@ -112,7 +112,7 @@ public class AndrewOpMode extends LinearOpMode {
                             autoSlide(0);
                         }
                         if(gamepad2.b){
-                            autoSlide(1000);
+                            autoSlide(1500);
                         }
                         if(gamepad2.x){
                             autoSlide(2000);
