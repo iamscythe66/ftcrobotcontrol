@@ -13,7 +13,7 @@ import com.qualcomm.robotcore.util.Range;
     gamepad1:
         left stick:     Driving
         right stick:    Rotation
-        a:              close grabber
+        a (x):          close grabber
         b:              open grabber
 
     gamapad2:
