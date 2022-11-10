@@ -44,7 +44,7 @@ public class AndrewOpMode extends LinearOpMode {
     DRIVESTATE driveState = DRIVESTATE.joyDrive;
     SLIDESTATE slideState = SLIDESTATE.autoSlide;
 
-    double driveSpeed = 0.8;
+    double driveSpeed = 0.6;
     double slowerDriveSpeed = 0.4;
     double slideSpeed = 0.3;
     double autoSlideSpeed = 0.8;
@@ -112,10 +112,10 @@ public class AndrewOpMode extends LinearOpMode {
                             autoSlide(0);
                         }
                         if(gamepad2.b){
-                            autoSlide(1700);
+                            autoSlide(1600);
                         }
                         if(gamepad2.x){
-                            autoSlide(2000);
+                            autoSlide(1900);
                         }
                         if(gamepad2.y){
                             autoSlide(2500);
@@ -145,6 +145,11 @@ public class AndrewOpMode extends LinearOpMode {
                 if(gamepad1.b){
                     grabber.setPosition(.53);
                 }
+            }
+
+            //reset slider
+            if(gamepad2.dpad_down){
+                Slider.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
             }
 
             //telemetry
