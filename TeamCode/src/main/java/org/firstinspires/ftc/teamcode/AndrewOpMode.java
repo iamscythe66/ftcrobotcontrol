@@ -11,17 +11,17 @@ import com.qualcomm.robotcore.util.Range;
 /*
     CONTROLS:
     gamepad1:
-        left stick:     Driving
-        right stick:    Rotation
-        a (x):          close grabber
-        b:              open grabber
-
-    gamapad2:
-        right stick:    manual sliding
-        a:              base
-        b:              low
-        x:              med
-        y:              high?
+        left stick:             Driving
+        right stick:            Rotation
+        left bumper (hold):     slower driving
+        a (x):                  close grabber
+        b (circle):             open grabber
+        x (square):             manual slide down
+        y (triangle):           manual slide up
+        dpad down:              base
+        dpad right:             low
+        dpad left:              med
+        dpad up:                high
  */
 
 @TeleOp(name = "Andrew opmode", group = "TeleOp")
@@ -46,8 +46,9 @@ public class AndrewOpMode extends LinearOpMode {
 
     double driveSpeed = 0.6;
     double slowerDriveSpeed = 0.4;
+    double currentDriveSpeed = driveSpeed;
     double slideSpeed = 0.3;
-    double autoSlideSpeed = 0.8;
+    double autoSlideSpeed = 0.6;
     double sens = 0.2;
 
     public void runOpMode() throws InterruptedException {
@@ -76,29 +77,16 @@ public class AndrewOpMode extends LinearOpMode {
                 horizontalControl = clipJoyInput(gamepad1.left_stick_x);
                 rotateControl = clipJoyInput(gamepad1.right_stick_x);
 
-                verticalSlowControl = getGamepad1DpadY();
-                horizontalSlowControl = getGamepad1DpadX();
-
-                switch (driveState){
-                    case joyDrive:
-                        //move wheels
-                        Drive(verticalControl, horizontalControl, rotateControl, driveSpeed);
-
-                        //condition to change state
-                        if((getGamepad1DpadX() != 0)|| (getGamepad1DpadY() != 0)){
-                            driveState = DRIVESTATE.dpadDrive;
-                        }
-                        break;
-                    case dpadDrive:
-                        //move wheels slowly
-                        Drive(verticalSlowControl,horizontalSlowControl,rotateControl,slowerDriveSpeed);
-
-                        //condition to change state
-                        if((Math.abs(verticalControl) >= sens) || (Math.abs(horizontalControl) >= sens)){
-                            driveState = DRIVESTATE.joyDrive;
-                        }
-                        break;
+                //hold for slow mode
+                if(gamepad1.left_bumper){
+                    currentDriveSpeed = slowerDriveSpeed;
                 }
+                else{
+                    currentDriveSpeed = driveSpeed;
+                }
+
+                //apply control
+                Drive(verticalControl, horizontalControl, rotateControl, currentDriveSpeed);
             }
 
             //sliding
@@ -108,29 +96,37 @@ public class AndrewOpMode extends LinearOpMode {
                 switch(slideState){
                     case autoSlide:
                         //check each button and set target position
-                        if(gamepad2.a){
+                        if(gamepad1.dpad_down){
                             autoSlide(0);
                         }
-                        if(gamepad2.b){
+                        if(gamepad1.dpad_right){
                             autoSlide(1500);
                         }
-                        if(gamepad2.x){
+                        if(gamepad1.dpad_left){
                             autoSlide(2000);
                         }
-                        if(gamepad2.y){
+                        if(gamepad1.dpad_up){
                             autoSlide(2500);
                         }
                         //case to change state
-                        if(Math.abs(sliderControl) >= sens){
+                        if(gamepad1.x || gamepad1.y){
                             slideState = SLIDESTATE.manualSlide;
                         }
                         break;
                     case manualSlide:
                         //control slider manually
-                        manualSlide(sliderControl * slideSpeed);
+                        if(gamepad1.x){
+                            manualSlide(-slideSpeed);
+                        }
+                        else if(gamepad1.y){
+                            manualSlide(slideSpeed);
+                        }
+                        else{
+                            manualSlide(0);
+                        }
 
                         //case to change state (any button are pressed)
-                        if(gamepad2.a || gamepad2.b || gamepad2.x || gamepad2.y){
+                        if(gamepad1.dpad_left || gamepad1.dpad_right || gamepad1.dpad_up || gamepad1.dpad_down){
                             slideState = SLIDESTATE.autoSlide;
                         }
                         break;
@@ -148,9 +144,9 @@ public class AndrewOpMode extends LinearOpMode {
             }
 
             //reset slider
-            if(gamepad2.dpad_down){
+            if(gamepad1.right_bumper){
                 Slider.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-                Slider.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+                slideState = SLIDESTATE.manualSlide;
             }
 
             //telemetry
@@ -183,7 +179,7 @@ public class AndrewOpMode extends LinearOpMode {
     }
 
     public void autoSlide(int position){
-        Slider.setPower(slideSpeed);
+        Slider.setPower(autoSlideSpeed);
 
         if(Slider.getMode() != DcMotor.RunMode.RUN_TO_POSITION){
             Slider.setMode(DcMotor.RunMode.RUN_TO_POSITION);
@@ -209,28 +205,5 @@ public class AndrewOpMode extends LinearOpMode {
         }
 
         return Range.clip(input, -1, 1);
-    }
-
-    //methods to convert dpad from individual buttons into something similar to joystick inputs
-    public double getGamepad1DpadX(){
-        if(gamepad1.dpad_right){
-            return 1.0;
-        }
-        if(gamepad1.dpad_left){
-            return -1.0;
-        }
-
-        return 0.0;
-    }
-
-    public double getGamepad1DpadY(){
-        if(gamepad1.dpad_up){
-            return 1.0;
-        }
-        if(gamepad1.dpad_down){
-            return -1.0;
-        }
-
-        return 0.0;
     }
 }
