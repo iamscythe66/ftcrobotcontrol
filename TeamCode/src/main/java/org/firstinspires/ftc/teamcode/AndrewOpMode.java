@@ -103,10 +103,10 @@ public class AndrewOpMode extends LinearOpMode {
                             autoSlide(1500);
                         }
                         if(gamepad1.dpad_left){
-                            autoSlide(2000);
+                            autoSlide(2100);
                         }
                         if(gamepad1.dpad_up){
-                            autoSlide(2500);
+                            autoSlide(3000);
                         }
                         //case to change state
                         if(gamepad1.x || gamepad1.y){
