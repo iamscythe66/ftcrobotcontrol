@@ -14,7 +14,10 @@ public class Test extends LinearOpMode {
     DcMotorEx FrontLeft,FrontRight,BackLeft,BackRight,Slider;
     Servo grabber;
 
-    double driveSpeed = 0.5;
+    double driveSpeedFR = 0.5;
+    double driveSpeedFL = 0.7;
+    double driveSpeedBR = 0.5;
+    double driveSpeedBL = 0.7;
 
     public void runOpMode() throws InterruptedException
     {
@@ -34,7 +37,7 @@ public class Test extends LinearOpMode {
         Slider.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         Slider.setTargetPosition(0);
         Slider.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        Slider.setPower(0.4);
+        Slider.setPower(1);
 
         waitForStart();
 
@@ -50,22 +53,33 @@ public class Test extends LinearOpMode {
                 Drive(0,0,0);
             }
 
-            if(gamepad1.dpad_up){
+            if(gamepad2.y){
                 Slider.setTargetPosition(2000);
             }
-            if(gamepad1.dpad_down){
-                Slider.setTargetPosition(50);
+            if(gamepad2.a){
+                Slider.setTargetPosition(0);
             }
-            if(gamepad1.dpad_left)
+            if(gamepad2.b)
             {
-                Slider.setTargetPosition(1000);
+                Slider.setTargetPosition(1300);
             }
-            if(gamepad1.a){
-                grabber.setPosition(.3);
+            if(gamepad2.x)
+            {
+                Slider.setTargetPosition(2850);
             }
-            if(gamepad1.b){
+            if(gamepad2.left_bumper){
+                grabber.setPosition(.35);
+            }
+            if(gamepad2.right_bumper){
                 grabber.setPosition(.55);
             }
+            if(gamepad1.dpad_right)
+            {
+
+            }
+
+
+
 
             double position = Slider.getCurrentPosition();
             telemetry.addData("slider position", position);
@@ -81,10 +95,10 @@ public class Test extends LinearOpMode {
 
         double max = Math.abs(Math.max(Math.abs(frdrive),Math.max(Math.abs(fldrive),Math.max(Math.abs(brdrive),Math.abs(bldrive)))));
 
-        FrontRight.setPower(driveSpeed * frdrive / max);
-        FrontLeft.setPower(driveSpeed * fldrive / max);
-        BackRight.setPower(driveSpeed * brdrive / max);
-        BackLeft.setPower(driveSpeed * bldrive / max);
+        FrontRight.setPower(driveSpeedFR * frdrive / max);
+        FrontLeft.setPower(driveSpeedFL * fldrive / max);
+        BackRight.setPower(driveSpeedBR * brdrive / max);
+        BackLeft.setPower(driveSpeedBL * bldrive / max);
 
 
 
