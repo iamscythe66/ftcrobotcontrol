@@ -1,34 +1,36 @@
 package org.firstinspires.ftc.teamcode;
 
-import android.transition.Slide;
-
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
+import com.qualcomm.robotcore.hardware.DistanceSensor;
 import com.qualcomm.robotcore.hardware.Servo;
 
-@TeleOp(name = "JakeCode", group = "TeleOp")
-public class Test extends LinearOpMode {
+import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
+
+@TeleOp(name = "Jake2controller", group = "TeleOp")
+public class Jake2controller extends LinearOpMode {
     DcMotorEx FrontLeft,FrontRight,BackLeft,BackRight,Slider;
     Servo grabber;
+    //DistanceSensor distance;
 
-    double driveSpeedFR = 0.5;
-    double driveSpeedFL = 0.7;
-    double driveSpeedBR = 0.5;
-    double driveSpeedBL = 0.7;
+    double driveSpeedFR = -0.6;
+    double driveSpeedFL = -0.5;
+    double driveSpeedBR = -0.6;
+    double driveSpeedBL = -0.5;
 
     public void runOpMode() throws InterruptedException
     {
-        FrontLeft = hardwareMap.get(DcMotorEx.class,"FrontLeft");
-        FrontRight = hardwareMap.get(DcMotorEx.class, "FrontRight");
-        BackLeft = hardwareMap.get(DcMotorEx.class, "RearLeft");
-        BackRight = hardwareMap.get(DcMotorEx.class, "RearRight");
+        FrontLeft = hardwareMap.get(DcMotorEx.class,"front left");
+        FrontRight = hardwareMap.get(DcMotorEx.class, "front right");
+        BackLeft = hardwareMap.get(DcMotorEx.class, "back left");
+        BackRight = hardwareMap.get(DcMotorEx.class, "back right");
+        //distance =  hardwareMap.get(DistanceSensor.class, "distance");
+        Slider = hardwareMap.get(DcMotorEx.class, "slider");
 
-        Slider = hardwareMap.get(DcMotorEx.class, "Slider");
-
-        grabber = hardwareMap.get(Servo.class,"Grabber");
+        grabber = hardwareMap.get(Servo.class,"grabber");
 
         BackLeft.setDirection(DcMotorSimple.Direction.REVERSE);
         FrontLeft.setDirection(DcMotorSimple.Direction.REVERSE);
@@ -38,6 +40,8 @@ public class Test extends LinearOpMode {
         Slider.setTargetPosition(0);
         Slider.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         Slider.setPower(1);
+
+
 
         waitForStart();
 
@@ -71,7 +75,7 @@ public class Test extends LinearOpMode {
                 grabber.setPosition(.35);
             }
             if(gamepad2.right_bumper){
-                grabber.setPosition(.55);
+                grabber.setPosition(.53);
             }
             if(gamepad1.dpad_right)
             {
@@ -81,17 +85,18 @@ public class Test extends LinearOpMode {
 
 
 
-            double position = Slider.getCurrentPosition();
-            telemetry.addData("slider position", position);
+            telemetry.addData("slider position", Slider.getCurrentPosition());
+            //telemetry.addData("range", String.format("%.01f mm", distance.getDistance(DistanceUnit.MM)));
+            //telemetry.addData("range", String.format("%.01f in", distance.getDistance(DistanceUnit.INCH)));
             telemetry.update();
         }
     }
 
     public void Drive(double vert, double horz, double rotate){
-        double frdrive = vert - horz - rotate;
-        double fldrive = vert + horz + rotate;
-        double brdrive = vert + horz - rotate;
-        double bldrive = vert - horz + rotate;
+        double frdrive = vert + horz - rotate;
+        double fldrive = vert - horz + rotate;
+        double brdrive = vert - horz - rotate;
+        double bldrive = vert + horz + rotate;
 
         double max = Math.abs(Math.max(Math.abs(frdrive),Math.max(Math.abs(fldrive),Math.max(Math.abs(brdrive),Math.abs(bldrive)))));
 
