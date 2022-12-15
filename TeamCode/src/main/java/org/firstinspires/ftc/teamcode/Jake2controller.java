@@ -16,10 +16,10 @@ public class Jake2controller extends LinearOpMode {
     Servo grabber;
     //DistanceSensor distance;
 
-    double driveSpeedFR = -0.6;
-    double driveSpeedFL = -0.5;
-    double driveSpeedBR = -0.6;
-    double driveSpeedBL = -0.5;
+    double driveSpeedFR = -0.7;
+    double driveSpeedFL = -0.62;
+    double driveSpeedBR = -0.7;
+    double driveSpeedBL = -0.62;
 
     public void runOpMode() throws InterruptedException
     {
@@ -93,10 +93,10 @@ public class Jake2controller extends LinearOpMode {
     }
 
     public void Drive(double vert, double horz, double rotate){
-        double frdrive = vert + horz - rotate;
-        double fldrive = vert - horz + rotate;
-        double brdrive = vert - horz - rotate;
-        double bldrive = vert + horz + rotate;
+        double frdrive = vert + horz + rotate;
+        double fldrive = vert - horz - rotate;
+        double brdrive = vert - horz + rotate;
+        double bldrive = vert + horz - rotate;
 
         double max = Math.abs(Math.max(Math.abs(frdrive),Math.max(Math.abs(fldrive),Math.max(Math.abs(brdrive),Math.abs(bldrive)))));
 
