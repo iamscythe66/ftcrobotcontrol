@@ -24,12 +24,12 @@ import com.qualcomm.robotcore.util.Range;
         dpad up:                high
  */
 
-@TeleOp(name = "Andrew opmode", group = "TeleOp")
-public class AndrewOpMode extends LinearOpMode {
+@TeleOp(name = "Andrew opmode with tank drive", group = "TeleOp")
+public class TankDrive extends LinearOpMode {
     DcMotorEx FrontLeft, FrontRight, BackLeft, BackRight, Slider;
     Servo grabber;
 
-    double verticalControl, horizontalControl, rotateControl, verticalSlowControl, horizontalSlowControl, sliderControl;
+    double leftVerticalControl, leftHorizontalControl, rightVerticalControl, rightHorizontalControl, verticalSlowControl, horizontalSlowControl, sliderControl;
 
     //state machine enums
     enum DRIVESTATE{
@@ -73,9 +73,10 @@ public class AndrewOpMode extends LinearOpMode {
             //driving
             {
                 //get gamepad joystick and dpad variables for control
-                verticalControl = -1 * clipJoyInput(gamepad1.left_stick_y);
-                horizontalControl = clipJoyInput(gamepad1.left_stick_x);
-                rotateControl = clipJoyInput(gamepad1.right_stick_x);
+                leftVerticalControl = -1 * clipJoyInput(gamepad1.left_stick_y);
+                leftHorizontalControl = clipJoyInput(gamepad1.left_stick_x);
+                rightVerticalControl = -1 * clipJoyInput(gamepad1.right_stick_y);
+                rightHorizontalControl = clipJoyInput(gamepad1.right_stick_x);
 
                 //hold for slow mode
                 if(gamepad1.left_bumper){
@@ -86,7 +87,7 @@ public class AndrewOpMode extends LinearOpMode {
                 }
 
                 //apply control
-                Drive(verticalControl, horizontalControl, rotateControl, currentDriveSpeed);
+                Drive(leftVerticalControl, leftHorizontalControl, rightHorizontalControl, rightVerticalControl, currentDriveSpeed);
             }
 
             //sliding
@@ -151,11 +152,11 @@ public class AndrewOpMode extends LinearOpMode {
 
             //telemetry
             telemetry.addData("gamepad1leftstickx", gamepad1.left_stick_x);
-            telemetry.addData("horz control", horizontalControl);
+            telemetry.addData("horz control", leftHorizontalControl);
             telemetry.addData("gamepad1leftsticky", gamepad1.left_stick_y);
-            telemetry.addData("vert control", verticalControl);
+            telemetry.addData("vert control", leftVerticalControl);
             telemetry.addData("gamepad1rightstickx", gamepad1.right_stick_x);
-            telemetry.addData("rotate control", rotateControl);
+            telemetry.addData("rotate control", rightHorizontalControl);
             telemetry.addData("DriveState", driveState);
             telemetry.addData("SlideState", slideState);
             telemetry.addData("Slide position", Slider.getCurrentPosition());
@@ -164,11 +165,11 @@ public class AndrewOpMode extends LinearOpMode {
         }
     }
 
-    public void Drive(double vert, double horz, double rotate, double power) {
-        double frdrive = vert - horz - rotate;
-        double fldrive = vert + horz + rotate;
-        double brdrive = vert + horz - rotate;
-        double bldrive = vert - horz + rotate;
+    public void Drive(double leftVert, double leftHorz, double rightHorz, double rightVert, double power) {
+        double frdrive = rightVert - rightHorz;
+        double fldrive = leftVert + leftHorz;
+        double brdrive = rightVert + rightHorz;
+        double bldrive = leftVert - leftHorz;
 
         double max = Math.abs(Math.max(Math.abs(frdrive), Math.max(Math.abs(fldrive), Math.max(Math.abs(brdrive), Math.abs(bldrive)))));
 
