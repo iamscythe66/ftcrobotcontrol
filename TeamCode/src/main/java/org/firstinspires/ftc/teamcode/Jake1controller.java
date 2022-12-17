@@ -99,12 +99,21 @@ public class Jake1controller extends LinearOpMode {
             }
 
             if(gamepad1.a) {
-                wrist.setPosition(wrist.getPosition() + .01)
+                wrist.setPosition(wrist.getPosition() + .01);
+            }
+
+            if(gamepad1.b) {
+                wrist.setPosition(wrist.getPosition() - .01);
+            }
+
+            if(gamepad1.dpad_down) {
+                wrist.setPosition(0.67);
             }
 
 
             telemetry.addData("slider position", Slider.getCurrentPosition());
             telemetry.addData("Grabber position: ", grabber.getPosition());
+            telemetry.addData("Wrist position: ", wrist.getPosition());
             //telemetry.addData("range", String.format("%.01f mm", distance.getDistance(DistanceUnit.MM)));
             //telemetry.addData("range", String.format("%.01f in", distance.getDistance(DistanceUnit.INCH)));
             telemetry.update();
