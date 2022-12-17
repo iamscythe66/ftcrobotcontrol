@@ -25,6 +25,8 @@ public class Jake1controller extends LinearOpMode {
 
     public void runOpMode() throws InterruptedException
     {
+
+        // motor declarations
         FrontLeft = hardwareMap.get(DcMotorEx.class,"front left");
         FrontRight = hardwareMap.get(DcMotorEx.class, "front right");
         BackLeft = hardwareMap.get(DcMotorEx.class, "back left");
@@ -33,6 +35,7 @@ public class Jake1controller extends LinearOpMode {
         Slider = hardwareMap.get(DcMotorEx.class, "slider");
         Arm = hardwareMap.get(DcMotorEx.class, "arm");
 
+        // servo declarations
         wrist = hardwareMap.get(Servo.class, "wrist");
         grabber = hardwareMap.get(Servo.class,"grabber");
 
@@ -43,12 +46,12 @@ public class Jake1controller extends LinearOpMode {
         Slider.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         Slider.setTargetPosition(0);
         Slider.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        Slider.setPower(1);
+        Slider.setPower(0.5);
 
         Arm.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         Arm.setTargetPosition(0);
         Arm.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        Arm.setPower(0.2);
+        Arm.setPower(0.5);
 
 
 
@@ -56,10 +59,13 @@ public class Jake1controller extends LinearOpMode {
         Slider.setTargetPosition(100);
 
         while(opModeIsActive()){
+
+            // drive calculations
             double vert = -gamepad1.left_stick_y;
             double horz = gamepad1.left_stick_x;
             double rotate = gamepad1.right_stick_x;
 
+            // only drives when input is there
             if(Math.abs(vert) > .1 || Math.abs(horz) > .1 || Math.abs(rotate) > .1){
                 Drive(vert,horz,rotate);
             }
@@ -83,9 +89,13 @@ public class Jake1controller extends LinearOpMode {
             }
 
              */
+
+            // grabber closed preset
             if(gamepad1.left_bumper){
                 grabber.setPosition(.7);
             }
+
+            // grabber open preset
             if(gamepad1.right_bumper){
                 grabber.setPosition(.5);
             }
@@ -106,11 +116,13 @@ public class Jake1controller extends LinearOpMode {
                 wrist.setPosition(wrist.getPosition() - .01);
             }
 
+            // wrist preset for down position
             if(gamepad1.dpad_down) {
                 wrist.setPosition(0.67);
             }
 
 
+            // telemetry for testing
             telemetry.addData("slider position", Slider.getCurrentPosition());
             telemetry.addData("Grabber position: ", grabber.getPosition());
             telemetry.addData("Wrist position: ", wrist.getPosition());
@@ -120,14 +132,17 @@ public class Jake1controller extends LinearOpMode {
         }
     }
 
+    // drive calculations
     public void Drive(double vert, double horz, double rotate){
         double frdrive = -vert - horz - rotate;
         double fldrive = -vert + horz + rotate;
         double brdrive = -vert + horz - rotate;
         double bldrive = -vert - horz + rotate;
 
+        // finding maximum drive for division below
         double max = Math.abs(Math.max(Math.abs(frdrive),Math.max(Math.abs(fldrive),Math.max(Math.abs(brdrive),Math.abs(bldrive)))));
 
+        // power calculations
         FrontRight.setPower(driveSpeedFR * frdrive / max);
         FrontLeft.setPower(driveSpeedFL * fldrive / max);
         BackRight.setPower(driveSpeedBR * brdrive / max);
