@@ -7,19 +7,21 @@ import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.DistanceSensor;
 import com.qualcomm.robotcore.hardware.Servo;
+import com.qualcomm.robotcore.hardware.ServoControllerEx;
 
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 
 @TeleOp(name = "Jake1controller", group = "TeleOp")
 public class Jake1controller extends LinearOpMode {
-    DcMotorEx FrontLeft,FrontRight,BackLeft,BackRight,Slider;
+    DcMotorEx FrontLeft,FrontRight,BackLeft,BackRight,Slider,Arm;
     Servo grabber;
+    Servo wrist;
     //DistanceSensor distance;
 
-    double driveSpeedFR = -0.7;
-    double driveSpeedFL = -0.62;
-    double driveSpeedBR = -0.7;
-    double driveSpeedBL = -0.62;
+    double driveSpeedFR = 0.7;
+    double driveSpeedFL = 0.62;
+    double driveSpeedBR = 0.7;
+    double driveSpeedBL = 0.62;
 
     public void runOpMode() throws InterruptedException
     {
@@ -29,7 +31,9 @@ public class Jake1controller extends LinearOpMode {
         BackRight = hardwareMap.get(DcMotorEx.class, "back right");
         //distance =  hardwareMap.get(DistanceSensor.class, "distance");
         Slider = hardwareMap.get(DcMotorEx.class, "slider");
+        Arm = hardwareMap.get(DcMotorEx.class, "arm");
 
+        wrist = hardwareMap.get(Servo.class, "wrist");
         grabber = hardwareMap.get(Servo.class,"grabber");
 
         BackLeft.setDirection(DcMotorSimple.Direction.REVERSE);
@@ -40,6 +44,10 @@ public class Jake1controller extends LinearOpMode {
         Slider.setTargetPosition(0);
         Slider.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         Slider.setPower(1);
+
+        Arm.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        Arm.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        Arm.setPower(0.2);
 
 
 
@@ -67,19 +75,21 @@ public class Jake1controller extends LinearOpMode {
             {
                 Slider.setTargetPosition(1000);
             }
-            if(gamepad1.x)
+            /*if(gamepad1.x)
             {
                 Slider.setTargetPosition(2850);
             }
+
+             */
             if(gamepad1.left_bumper){
                 grabber.setPosition(.7);
             }
             if(gamepad1.right_bumper){
                 grabber.setPosition(0);
             }
-            if(gamepad1.dpad_right)
-            {
 
+            if(gamepad1.x) {
+                Arm.setTargetPosition(Arm.getCurrentPosition() + 50);
             }
 
 
@@ -93,10 +103,10 @@ public class Jake1controller extends LinearOpMode {
     }
 
     public void Drive(double vert, double horz, double rotate){
-        double frdrive = vert + horz + rotate;
-        double fldrive = vert - horz - rotate;
-        double brdrive = vert - horz + rotate;
-        double bldrive = vert + horz - rotate;
+        double frdrive = -vert - horz - rotate;
+        double fldrive = -vert + horz + rotate;
+        double brdrive = -vert + horz - rotate;
+        double bldrive = -vert - horz + rotate;
 
         double max = Math.abs(Math.max(Math.abs(frdrive),Math.max(Math.abs(fldrive),Math.max(Math.abs(brdrive),Math.abs(bldrive)))));
 
