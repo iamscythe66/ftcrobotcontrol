@@ -46,12 +46,14 @@ public class Jake1controller extends LinearOpMode {
         Slider.setPower(1);
 
         Arm.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        Arm.setTargetPosition(0);
         Arm.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         Arm.setPower(0.2);
 
 
 
         waitForStart();
+        Slider.setTargetPosition(100);
 
         while(opModeIsActive()){
             double vert = -gamepad1.left_stick_y;
@@ -65,7 +67,7 @@ public class Jake1controller extends LinearOpMode {
                 Drive(0,0,0);
             }
 
-            if(gamepad1.y){
+            /*if(gamepad1.y){
                 Slider.setTargetPosition(2000);
             }
             if(gamepad1.a){
@@ -75,7 +77,7 @@ public class Jake1controller extends LinearOpMode {
             {
                 Slider.setTargetPosition(1000);
             }
-            /*if(gamepad1.x)
+            if(gamepad1.x)
             {
                 Slider.setTargetPosition(2850);
             }
@@ -85,17 +87,24 @@ public class Jake1controller extends LinearOpMode {
                 grabber.setPosition(.7);
             }
             if(gamepad1.right_bumper){
-                grabber.setPosition(0);
+                grabber.setPosition(.5);
             }
 
             if(gamepad1.x) {
-                Arm.setTargetPosition(Arm.getCurrentPosition() + 50);
+                Arm.setTargetPosition(Arm.getCurrentPosition() - 30);
+            }
+
+            if(gamepad1.y) {
+                Arm.setTargetPosition(Arm.getCurrentPosition() + 30);
+            }
+
+            if(gamepad1.a) {
+                wrist.setPosition(wrist.getPosition() + .01)
             }
 
 
-
-
             telemetry.addData("slider position", Slider.getCurrentPosition());
+            telemetry.addData("Grabber position: ", grabber.getPosition());
             //telemetry.addData("range", String.format("%.01f mm", distance.getDistance(DistanceUnit.MM)));
             //telemetry.addData("range", String.format("%.01f in", distance.getDistance(DistanceUnit.INCH)));
             telemetry.update();
