@@ -23,6 +23,23 @@ public class Jake1controller extends LinearOpMode {
     double driveSpeedBR = 0.7;
     double driveSpeedBL = 0.62;
 
+    // list of methods
+    public void armBack() {
+        Arm.setTargetPosition(-1600);
+    }
+
+    public void armFront() {
+        Arm.setTargetPosition(0);
+    }
+
+    public void wristDown() {
+        wrist.setPosition(0.92);
+    }
+
+    public void wristUp() {
+        wrist.setPosition(0.29);
+    }
+
     public void runOpMode() throws InterruptedException
     {
 
@@ -51,12 +68,11 @@ public class Jake1controller extends LinearOpMode {
         Arm.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         Arm.setTargetPosition(0);
         Arm.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        Arm.setPower(0.5);
+        Arm.setPower(0.7);
 
 
 
         waitForStart();
-        Slider.setTargetPosition(100);
 
         while(opModeIsActive()){
 
@@ -108,24 +124,42 @@ public class Jake1controller extends LinearOpMode {
                 Arm.setTargetPosition(Arm.getCurrentPosition() + 30);
             }
 
+            // arm forward position
             if(gamepad1.a) {
-                wrist.setPosition(wrist.getPosition() + .01);
+                armFront();
             }
 
+            // arm back position
             if(gamepad1.b) {
-                wrist.setPosition(wrist.getPosition() - .01);
+                armBack();
             }
 
             // wrist preset for down position
             if(gamepad1.dpad_down) {
-                wrist.setPosition(0.67);
+                wristDown();
             }
 
+            // wrist preset for up position
+            if(gamepad1.dpad_up) {
+                wristUp();
+            }
+
+            // arm and wrist at the same time
+            if(gamepad1.dpad_left) {
+                armBack();
+                wristUp();
+            }
+
+            if(gamepad1.dpad_right) {
+                armFront();
+                wristDown();
+            }
 
             // telemetry for testing
             telemetry.addData("slider position", Slider.getCurrentPosition());
             telemetry.addData("Grabber position: ", grabber.getPosition());
             telemetry.addData("Wrist position: ", wrist.getPosition());
+            telemetry.addData("Arm position: ", + Arm.getCurrentPosition());
             //telemetry.addData("range", String.format("%.01f mm", distance.getDistance(DistanceUnit.MM)));
             //telemetry.addData("range", String.format("%.01f in", distance.getDistance(DistanceUnit.INCH)));
             telemetry.update();
