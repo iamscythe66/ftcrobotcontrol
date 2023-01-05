@@ -11,7 +11,7 @@ import com.qualcomm.robotcore.hardware.ServoControllerEx;
 
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 
-@TeleOp(name = "Jake1controller", group = "TeleOp")
+@TeleOp(name = "Jake2controller", group = "TeleOp")
 public class Jake2controller extends LinearOpMode {
     DcMotorEx FrontLeft,FrontRight,BackLeft,BackRight,Slider,Arm;
     Servo grabber;
