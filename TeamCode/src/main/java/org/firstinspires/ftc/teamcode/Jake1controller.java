@@ -33,11 +33,11 @@ public class Jake1controller extends LinearOpMode {
     }
 
     public void wristDown() {
-        wrist.setPosition(wrist.getPosition()-0.005);
+        wrist.setPosition(wrist.getPosition()-0.05);
     }
 
     public void wristUp() {
-        wrist.setPosition(wrist.getPosition()-0.005);
+        wrist.setPosition(wrist.getPosition()-0.05);
     }
 
     public void runOpMode() throws InterruptedException
@@ -108,12 +108,12 @@ public class Jake1controller extends LinearOpMode {
 
             // grabber closed preset
             if(gamepad1.left_bumper){
-                grabber.setPosition(0.5);
+                grabber.setPosition(0.53);
             }
 
             // grabber open preset
             if(gamepad1.right_bumper){
-                grabber.setPosition(0.7);
+                grabber.setPosition(0.75);
             }
 
             if(gamepad1.x) {
