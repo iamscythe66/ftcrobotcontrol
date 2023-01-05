@@ -33,11 +33,11 @@ public class Jake1controller extends LinearOpMode {
     }
 
     public void wristDown() {
-        wrist.setPosition(wrist.getPosition()-0.05);
+        wrist.setPosition(0.75);
     }
 
     public void wristUp() {
-        wrist.setPosition(wrist.getPosition()-0.05);
+        wrist.setPosition(0.13);
     }
 
     public void runOpMode() throws InterruptedException
