@@ -24,23 +24,33 @@ public class Jake1controller extends LinearOpMode {
 
     // arm to drop position
     public void armBack() {
-        Arm.setTargetPosition(-1200);
+        Arm.setPower(armPower);
+        Arm.setTargetPosition(-700);
+        Arm.setPower(0.45);
+        Arm.setTargetPosition(-1500);
     }
 
     // arm to pick up position
     public void armFront() {
+        Arm.setPower(armPower);
         Arm.setTargetPosition(0);
     }
 
     // wrist to pick up position
     public void wristDown() {
-        wrist.setPosition(0.75);
+
+        wrist.setPosition(0.76);
     }
 
     // wrist to drop position
     public void wristUp() {
         wrist.setPosition(0.13);
     }
+
+    // list of power values
+    public double slidePower = 0.5;
+
+    public double armPower = 0.8;
 
     public void runOpMode() throws InterruptedException
     {
@@ -65,12 +75,12 @@ public class Jake1controller extends LinearOpMode {
         Slider.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         Slider.setTargetPosition(0);
         Slider.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        Slider.setPower(0.5);
+        Slider.setPower(slidePower);
 
         Arm.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         Arm.setTargetPosition(0);
         Arm.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        Arm.setPower(0.8);
+        Arm.setPower(armPower);
 
 
 
@@ -82,6 +92,11 @@ public class Jake1controller extends LinearOpMode {
             double vert = -gamepad1.left_stick_y;
             double horz = gamepad1.left_stick_x;
             double rotate = gamepad1.right_stick_x;
+            if (gamepad1.left_trigger > 0.2) {
+                driveSpeed = 0.15
+            } else {
+                driveSpeed = 0.7
+            }
 
 
             // only drives when input is there
@@ -111,7 +126,7 @@ public class Jake1controller extends LinearOpMode {
 
             // grabber closed preset
             if(gamepad1.left_bumper){
-                grabber.setPosition(0.5);
+                grabber.setPosition(0.51);
             }
 
             // grabber open preset
@@ -171,7 +186,7 @@ public class Jake1controller extends LinearOpMode {
 
     // drive calculations
 
-    double driveSpeed = 0.5;
+    double driveSpeed = 0.7;
     double driveTuningFR = 1.0;
     double driveTuningFL = 0.75;
     double driveTuningBR = 1.0;

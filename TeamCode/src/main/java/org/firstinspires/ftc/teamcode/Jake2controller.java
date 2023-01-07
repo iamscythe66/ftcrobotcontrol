@@ -22,7 +22,7 @@ public class Jake2controller extends LinearOpMode {
 
     // list of methods
     public void armBack() {
-        Arm.setTargetPosition(-1200);
+        Arm.setTargetPosition(-1500);
     }
 
     public void armFront() {
