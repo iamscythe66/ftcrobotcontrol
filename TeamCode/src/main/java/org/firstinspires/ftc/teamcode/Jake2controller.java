@@ -18,14 +18,11 @@ public class Jake2controller extends LinearOpMode {
     Servo wrist;
     //DistanceSensor distance;
 
-    double driveSpeedFR = 0.7;
-    double driveSpeedFL = 0.62;
-    double driveSpeedBR = 0.7;
-    double driveSpeedBL = 0.62;
+
 
     // list of methods
     public void armBack() {
-        Arm.setTargetPosition(-1750);
+        Arm.setTargetPosition(-1200);
     }
 
     public void armFront() {
@@ -33,11 +30,11 @@ public class Jake2controller extends LinearOpMode {
     }
 
     public void wristDown() {
-        wrist.setPosition(0.92);
+        wrist.setPosition(0.75);
     }
 
     public void wristUp() {
-        wrist.setPosition(0.29);
+        wrist.setPosition(0.13);
     }
 
     public void runOpMode() throws InterruptedException
@@ -68,7 +65,7 @@ public class Jake2controller extends LinearOpMode {
         Arm.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         Arm.setTargetPosition(0);
         Arm.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        Arm.setPower(0.7);
+        Arm.setPower(0.8);
         double sliderControl;
 
 
@@ -80,7 +77,12 @@ public class Jake2controller extends LinearOpMode {
             double vert = -gamepad1.left_stick_y;
             double horz = gamepad1.left_stick_x;
             double rotate = gamepad1.right_stick_x;
-
+            while (gamepad1.left_bumper) {
+                driveSpeedBL = 0.1;
+                driveSpeedBR = 0.1;
+                driveSpeedFL = 0.1;
+                driveSpeedFR = 0.1;
+            }
 
             sliderControl = -1*Clipjoyinput(gamepad2.right_stick_y);
             Slider.setPower(sliderControl);
@@ -113,30 +115,34 @@ public class Jake2controller extends LinearOpMode {
 
             // grabber closed preset
             if(gamepad2.left_bumper){
-                grabber.setPosition(.7);
+                grabber.setPosition(.5);
             }
 
             // grabber open preset
             if(gamepad2.right_bumper){
-                grabber.setPosition(.5);
+                grabber.setPosition(.65);
             }
 
+            // arm debugging
             if(gamepad1.x) {
-                Arm.setTargetPosition(Arm.getCurrentPosition() - 30);
+                Arm.setTargetPosition(Arm.getCurrentPosition() - 100);
             }
 
+            // arm debugging
             if(gamepad1.y) {
-                Arm.setTargetPosition(Arm.getCurrentPosition() + 30);
+                Arm.setTargetPosition(Arm.getCurrentPosition() + 100);
             }
 
-            // arm forward position
+            // arm and wrist to drop position
             if(gamepad1.a) {
                 armFront();
+                wristDown();
             }
 
-            // arm back position
+            // arm and wrist to pick up position
             if(gamepad1.b) {
                 armBack();
+                wristUp();
             }
 
             // wrist preset for down position
@@ -147,17 +153,6 @@ public class Jake2controller extends LinearOpMode {
             // wrist preset for up position
             if(gamepad1.dpad_up) {
                 wristUp();
-            }
-
-            // arm and wrist at the same time
-            if(gamepad1.dpad_left) {
-                armBack();
-                wristUp();
-            }
-
-            if(gamepad1.dpad_right) {
-                armFront();
-                wristDown();
             }
 
             // telemetry for testing
@@ -182,6 +177,12 @@ public class Jake2controller extends LinearOpMode {
 
 
     // drive calculations
+
+    double driveSpeedFR = 0.5;
+    double driveSpeedFL = 0.5;
+    double driveSpeedBR = 0.5;
+    double driveSpeedBL = 0.5;
+
     public void Drive(double vert, double horz, double rotate){
         double frdrive = -vert - horz - rotate;
         double fldrive = -vert + horz + rotate;

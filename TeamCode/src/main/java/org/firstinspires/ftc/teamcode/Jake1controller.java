@@ -18,24 +18,26 @@ public class Jake1controller extends LinearOpMode {
     Servo wrist;
     //DistanceSensor distance;
 
-    double driveSpeedFR = 0.7;
-    double driveSpeedFL = 0.62;
-    double driveSpeedBR = 0.7;
-    double driveSpeedBL = 0.62;
+
 
     // list of methods
+
+    // arm to drop position
     public void armBack() {
-        Arm.setTargetPosition(-1600);
+        Arm.setTargetPosition(-1200);
     }
 
+    // arm to pick up position
     public void armFront() {
         Arm.setTargetPosition(0);
     }
 
+    // wrist to pick up position
     public void wristDown() {
         wrist.setPosition(0.75);
     }
 
+    // wrist to drop position
     public void wristUp() {
         wrist.setPosition(0.13);
     }
@@ -68,7 +70,7 @@ public class Jake1controller extends LinearOpMode {
         Arm.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         Arm.setTargetPosition(0);
         Arm.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        Arm.setPower(0.7);
+        Arm.setPower(0.8);
 
 
 
@@ -80,6 +82,7 @@ public class Jake1controller extends LinearOpMode {
             double vert = -gamepad1.left_stick_y;
             double horz = gamepad1.left_stick_x;
             double rotate = gamepad1.right_stick_x;
+
 
             // only drives when input is there
             if(Math.abs(vert) > .1 || Math.abs(horz) > .1 || Math.abs(rotate) > .1){
@@ -108,51 +111,51 @@ public class Jake1controller extends LinearOpMode {
 
             // grabber closed preset
             if(gamepad1.left_bumper){
-                grabber.setPosition(0.53);
+                grabber.setPosition(0.5);
             }
 
             // grabber open preset
             if(gamepad1.right_bumper){
-                grabber.setPosition(0.75);
+                grabber.setPosition(0.65);
             }
 
             if(gamepad1.x) {
-                Arm.setTargetPosition(Arm.getCurrentPosition() - 30);
+                Arm.setTargetPosition(Arm.getCurrentPosition() - 100);
             }
 
             if(gamepad1.y) {
-                Arm.setTargetPosition(Arm.getCurrentPosition() + 30);
+                Arm.setTargetPosition(Arm.getCurrentPosition() + 100);
             }
 
             // arm forward position
             if(gamepad1.a) {
                 armFront();
+                wristDown();
             }
 
             // arm back position
             if(gamepad1.b) {
                 armBack();
-            }
-
-            // wrist preset for down position
-            if(gamepad1.dpad_down) {
-                wristDown();
-            }
-
-            // wrist preset for up position
-            if(gamepad1.dpad_up) {
                 wristUp();
+            }
+
+            // arm to pick up position
+            if(gamepad1.dpad_down) {
+                armFront();
+            }
+
+            // arm to drop position
+            if(gamepad1.dpad_up) {
+                armBack();
             }
 
             // arm and wrist at the same time
             if(gamepad1.dpad_left) {
                 armBack();
-                wristUp();
             }
 
             if(gamepad1.dpad_right) {
                 armFront();
-                wristDown();
             }
 
             // telemetry for testing
@@ -167,6 +170,13 @@ public class Jake1controller extends LinearOpMode {
     }
 
     // drive calculations
+
+    double driveSpeed = 0.5;
+    double driveTuningFR = 1.0;
+    double driveTuningFL = 0.75;
+    double driveTuningBR = 1.0;
+    double driveTuningBL = 0.75;
+
     public void Drive(double vert, double horz, double rotate){
         double frdrive = -vert - horz - rotate;
         double fldrive = -vert + horz + rotate;
@@ -177,10 +187,10 @@ public class Jake1controller extends LinearOpMode {
         double max = Math.abs(Math.max(Math.abs(frdrive),Math.max(Math.abs(fldrive),Math.max(Math.abs(brdrive),Math.abs(bldrive)))));
 
         // power calculations
-        FrontRight.setPower(driveSpeedFR * frdrive / max);
-        FrontLeft.setPower(driveSpeedFL * fldrive / max);
-        BackRight.setPower(driveSpeedBR * brdrive / max);
-        BackLeft.setPower(driveSpeedBL * bldrive / max);
+        FrontRight.setPower(driveSpeed * driveTuningFR * frdrive / max);
+        FrontLeft.setPower(driveSpeed * driveTuningFL * fldrive / max);
+        BackRight.setPower(driveSpeed * driveTuningBR * brdrive / max);
+        BackLeft.setPower(driveSpeed * driveTuningBL * bldrive / max);
 
 
 
