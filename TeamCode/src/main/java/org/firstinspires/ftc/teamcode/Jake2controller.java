@@ -97,11 +97,11 @@ public class Jake2controller extends LinearOpMode {
                 Slider.setTargetPosition(2000);
             }
             if(gamepad2.a){
-                Slider.setTargetPosition(0);
+                Slider.setTargetPosition(Slider.getCurrentPosition()-50);
             }
             if(gamepad2.b)
             {
-                Slider.setTargetPosition(1000);
+                Slider.setTargetPosition(Slider.getCurrentPosition()+50);
             }
             if(gamepad2.x)
             {

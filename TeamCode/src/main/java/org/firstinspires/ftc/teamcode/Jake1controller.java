@@ -25,9 +25,7 @@ public class Jake1controller extends LinearOpMode {
     // arm to drop position
     public void armBack() {
         Arm.setPower(armPower);
-        Arm.setTargetPosition(-700);
-        Arm.setPower(0.45);
-        Arm.setTargetPosition(-1500);
+        Arm.setTargetPosition(-1700);
     }
 
     // arm to pick up position
@@ -93,9 +91,9 @@ public class Jake1controller extends LinearOpMode {
             double horz = gamepad1.left_stick_x;
             double rotate = gamepad1.right_stick_x;
             if (gamepad1.left_trigger > 0.2) {
-                driveSpeed = 0.15
+                driveSpeed = 0.18;
             } else {
-                driveSpeed = 0.7
+                driveSpeed = 0.7;
             }
 
 
