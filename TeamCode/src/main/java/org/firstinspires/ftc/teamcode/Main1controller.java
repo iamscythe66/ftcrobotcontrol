@@ -11,8 +11,8 @@ import com.qualcomm.robotcore.hardware.ServoControllerEx;
 
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 
-@TeleOp(name = "Jake1controller", group = "TeleOp")
-public class Jake1controller extends LinearOpMode {
+@TeleOp(name = "Main No Flip", group = "TeleOp")
+public class Main1controller extends LinearOpMode {
     DcMotorEx FrontLeft,FrontRight,BackLeft,BackRight,Slider,Arm;
     Servo grabber;
     Servo wrist;
@@ -46,9 +46,9 @@ public class Jake1controller extends LinearOpMode {
     }
 
     // list of power values
-    public double slidePower = 0.5;
+    public double slidePower = 0.2;
 
-    public double armPower = 0.8;
+    public double armPower = 0.4;
 
     public void runOpMode() throws InterruptedException
     {
@@ -93,7 +93,7 @@ public class Jake1controller extends LinearOpMode {
             if (gamepad1.left_trigger > 0.2) {
                 driveSpeed = 0.18;
             } else {
-                driveSpeed = 0.7;
+                driveSpeed = 0.5;
             }
 
 
@@ -108,6 +108,8 @@ public class Jake1controller extends LinearOpMode {
             /*if(gamepad1.y){
                 Slider.setTargetPosition(2000);
             }
+            */
+
             if(gamepad1.a){
                 Slider.setTargetPosition(0);
             }
@@ -115,6 +117,8 @@ public class Jake1controller extends LinearOpMode {
             {
                 Slider.setTargetPosition(1000);
             }
+            
+            /*
             if(gamepad1.x)
             {
                 Slider.setTargetPosition(2850);
@@ -132,15 +136,15 @@ public class Jake1controller extends LinearOpMode {
                 grabber.setPosition(0.65);
             }
 
-            if(gamepad1.x) {
+            if(gamepad1.x && Arm.getCurrentPosition() > -1600) {
                 Arm.setTargetPosition(Arm.getCurrentPosition() - 100);
             }
 
-            if(gamepad1.y) {
+            if(gamepad1.y && Arm.getCurrentPosition() < -100) {
                 Arm.setTargetPosition(Arm.getCurrentPosition() + 100);
             }
 
-            // arm forward position
+            /* arm forward position
             if(gamepad1.a) {
                 armFront();
                 wristDown();
@@ -151,25 +155,7 @@ public class Jake1controller extends LinearOpMode {
                 armBack();
                 wristUp();
             }
-
-            // arm to pick up position
-            if(gamepad1.dpad_down) {
-                armFront();
-            }
-
-            // arm to drop position
-            if(gamepad1.dpad_up) {
-                armBack();
-            }
-
-            // arm and wrist at the same time
-            if(gamepad1.dpad_left) {
-                armBack();
-            }
-
-            if(gamepad1.dpad_right) {
-                armFront();
-            }
+            */
 
             // telemetry for testing
             telemetry.addData("slider position", Slider.getCurrentPosition());
